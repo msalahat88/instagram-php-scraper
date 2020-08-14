@@ -461,6 +461,42 @@ class Instagram
         return Account::create($userArray['entry_data']['ProfilePage'][0]['graphql']['user']);
     }
 
+    /**
+     * @param string $username
+     * @param string $email
+     *
+     * @return boolean
+     * @throws InstagramException
+     * @throws InstagramNotFoundException
+     * @throws Exception
+     */
+    public function changeUsername($username,$email)
+    {
+        $response = Request::post(Endpoints::getAccountEdit(), $this->generateHeaders($this->userSession),[
+            'email'=>$email,
+            'username'=>$username,
+        ]);
+
+        if (static::HTTP_NOT_FOUND === $response->code) {
+            throw new InstagramNotFoundException('Account with given username does not exist.');
+        }
+
+
+
+        $raw_body = json_decode($response->raw_body,true);
+
+        if($raw_body['status'] == 'ok'){
+
+            return true;
+
+        }else{
+
+            $messages = implode(' ',$raw_body['message']['errors']);
+
+            throw new Exception($messages);
+        }
+    }
+
     public function getAccountInfo($username)
     {
         $response = Request::get(Endpoints::getAccountJsonLink($username), $this->generateHeaders($this->userSession));

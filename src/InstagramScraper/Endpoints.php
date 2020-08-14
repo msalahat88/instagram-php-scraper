@@ -6,6 +6,7 @@ class Endpoints
 {
     const BASE_URL = 'https://www.instagram.com';
     const LOGIN_URL = 'https://www.instagram.com/accounts/login/ajax/';
+    const ACCOUNT_EDIT = 'https://www.instagram.com/accounts/edit/';
     const ACCOUNT_PAGE = 'https://www.instagram.com/{username}';
     const MEDIA_LINK = 'https://www.instagram.com/p/{code}';
     const ACCOUNT_MEDIAS = 'https://www.instagram.com/graphql/query/?query_hash=e769aa130647d2354c40ea6a439bfc08&variables={variables}';
@@ -64,6 +65,11 @@ class Endpoints
     public static function getAccountJsonLink($username)
     {
         return str_replace('{username}', urlencode($username), static::ACCOUNT_JSON_INFO);
+    }
+
+    public static function getAccountEdit()
+    {
+        return static::ACCOUNT_EDIT;
     }
 
     public static function getAccountJsonInfoLinkByAccountId($id)
